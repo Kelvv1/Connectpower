@@ -1,0 +1,30 @@
+[
+  {
+    "reference": "NP-2017-8492015",
+    "amount": 0,
+    "email": "chidi.okafor@example.com",
+    "paidAt": "2026-10-06T12:15:56.964Z",
+    "fullname": "Chidi Okafor",
+    "nin": "12345678901",
+    "track": "Tech Connect",
+    "documents": {
+      "birth": "birth-demo.pdf",
+      "waec": "waec-demo.pdf",
+      "photo": "photo-demo.jpg",
+      "govid": "govid-demo.pdf",
+      "degree": "degree-demo.pdf"
+    },
+    "paymentStatus": "not collected (Paystack paused)"
+  },
+  {
+    "reference": "NP-2017-9999999",
+    "amount": 0,
+    "email": "test@example.com",
+    "paidAt": "2026-10-06T14:16:39.919Z",
+    "fullname": "Ada Lovelace",
+    "nin": "12345678902",
+    "track": "Tech Connect",
+    "documents": {},
+    "paymentStatus": "not collected (Paystack paused)"
+  }
+]

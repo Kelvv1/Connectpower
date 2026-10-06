@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connect Power — Applications Open</title>
+<meta name="description" content="Connect Power — 5-step youth empowerment programme application portal across Teach, Tech, Agro, Build, and Health tracks with document uploads and admin dashboard." />
+<meta property="og:title" content="Connect Power — Applications Open" />
+<meta property="og:description" content="Connect Power — 5-step youth empowerment programme application portal across Teach, Tech, Agro, Build, and Health tracks." />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green-deep:#0B3B24;
+    --green:#146B3A;
+    --green-light:#E9F5EC;
+    --gold:#F2B705;
+    --ink:#132018;
+    --muted:#5B6B60;
+    --line:#DCE7DF;
+    font-family:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#fff;color:var(--ink);line-height:1.5;}
+  h1,h2,h3,.brand{font-family:'Poppins',system-ui,sans-serif;}
+  a{color:inherit;text-decoration:none;}
+
+  /* HEADER */
+  header{
+    padding:20px 5vw;
+    display:flex;flex-wrap:wrap;gap:20px;
+    align-items:center;justify-content:space-between;
+    border-bottom:1px solid var(--line);
+    background:#ffffff;
+  }
+  .brand-block{display:flex;align-items:center;gap:14px;}
+  .logo{width:46px;height:46px;flex-shrink:0;}
+  .brand-text h1{font-size:1.7rem;font-weight:700;color:var(--green-deep);}
+  .brand-text h1 span{color:var(--green);}
+  .brand-text p{font-size:.9rem;color:var(--muted);margin-top:2px;}
+  .header-actions{display:flex;align-items:center;gap:20px;}
+  .tagline{text-align:right;font-size:.95rem;color:var(--green-deep);font-style:italic;font-family:'Poppins',serif;}
+  .tagline b{color:var(--green);}
+  .admin-nav-link{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:8px 14px;border-radius:8px;border:1px solid var(--green);
+    color:var(--green-deep);font-weight:600;font-size:0.85rem;
+    transition:all 0.2s ease;
+  }
+  .admin-nav-link:hover{background:var(--green-light);}
+  @media (max-width:768px){ .tagline{display:none;} }
+
+  /* ACTIVITIES */
+  .activities{padding:40px 5vw 20px;}
+  .activities h2{font-size:1.5rem;color:var(--green-deep);margin-bottom:4px;}
+  .activities .sub{color:var(--muted);font-size:.95rem;margin-bottom:28px;}
+  .card-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    gap:20px;
+  }
+  .card{
+    background:var(--green-light);
+    border-radius:18px;
+    overflow:hidden;
+    display:flex;flex-direction:column;
+    box-shadow:0 4px 12px rgba(11,59,36,0.06);
+    transition:transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(11,59,36,0.12);}
+  .card-photo{
+    width:100%;height:148px;object-fit:cover;display:block;
+  }
+  .card-icon{
+    width:52px;height:52px;border-radius:50%;
+    background:var(--green-deep);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.4rem;margin:-26px 0 0 16px;
+    border:3px solid var(--green-light);
+    position:relative;
+    box-shadow:0 2px 6px rgba(0,0,0,0.15);
+  }
+  .card-body{padding:16px 18px 22px;display:flex;flex-direction:column;flex:1;}
+  .card-body h3{font-size:1.2rem;color:var(--green-deep);line-height:1.2;margin-bottom:8px;}
+  .card-body h3 span{display:block;color:var(--green);}
+  .card-body p{font-size:.88rem;color:var(--muted);margin-bottom:16px;flex:1;}
+  .learn-more{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:.88rem;font-weight:600;color:var(--green-deep);
+  }
+  .learn-more .arrow{
+    width:22px;height:22px;border-radius:50%;background:var(--green-light);
+    border:1.5px solid var(--green);
+    display:flex;align-items:center;justify-content:center;font-size:.8rem;
+    transition:transform 0.2s ease;
+  }
+  .card:hover .learn-more .arrow{transform:translateX(3px);}
+
+  /* REGISTRATION */
+  .registration{
+    margin:48px 5vw 20px;
+    background:var(--green-deep);
+    border-radius:24px;
+    color:#fff;
+    padding:40px 5vw;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px;
+    box-shadow:0 12px 36px rgba(11,59,36,0.18);
+  }
+  @media (max-width:850px){ .registration{grid-template-columns:1fr;gap:28px;} }
+  .registration h2{font-size:1.45rem;margin-bottom:4px;}
+  .registration .sub{color:#B9CEC0;font-size:.9rem;margin-bottom:24px;}
+  .steps{list-style:none;}
+  .steps li{
+    display:flex;gap:14px;align-items:flex-start;
+    padding:14px 0;border-bottom:1px solid rgba(255,255,255,.12);
+  }
+  .steps li:last-child{border-bottom:none;}
+  .step-num{
+    width:32px;height:32px;border-radius:50%;flex-shrink:0;
+    background:rgba(242,183,5,.2);color:var(--gold);
+    font-size:.85rem;font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+    border:1px solid rgba(242,183,5,0.4);
+  }
+  .step-text b{display:block;font-size:.98rem;}
+  .step-text span{font-size:.82rem;color:#B9CEC0;}
+
+  .reg-form{display:flex;flex-direction:column;justify-content:center;}
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-size:.82rem;color:#B9CEC0;margin-bottom:6px;font-weight:500;}
+  .field input{
+    width:100%;padding:13px 15px;border-radius:9px;border:1px solid rgba(255,255,255,.2);
+    background:rgba(255,255,255,.08);color:#fff;font-size:.94rem;font-family:inherit;
+    transition:border-color 0.2s, background 0.2s;
+  }
+  .field input::placeholder{color:#829A88;}
+  .field input:focus{outline:2px solid var(--gold);outline-offset:1px;background:rgba(255,255,255,.12);}
+  .create-btn{
+    width:100%;margin-top:8px;background:var(--gold);color:var(--green-deep);
+    padding:15px;border-radius:9px;border:none;font-weight:700;font-size:.98rem;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    box-shadow:0 4px 14px rgba(242,183,5,0.3);
+    transition:transform 0.15s ease, filter 0.15s ease;
+  }
+  .create-btn:hover{filter:brightness(1.05);transform:translateY(-1px);}
+  .create-btn:active{transform:translateY(1px);}
+
+  /* FOOTER BADGES */
+  .badges{
+    display:flex;flex-wrap:wrap;gap:24px;justify-content:center;
+    padding:28px 5vw 48px;
+    font-size:.9rem;color:var(--green-deep);font-weight:600;
+  }
+  .badges span{display:flex;align-items:center;gap:8px;}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--green);}
+
+  footer.bottom-bar{
+    text-align:center;padding:16px 5vw 28px;
+    font-size:0.8rem;color:var(--muted);
+    border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand-block">
+    <svg class="logo" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="10" r="5" fill="#F2B705"/>
+      <path d="M24 16C24 16 10 20 10 34C10 34 24 34 24 20C24 34 38 34 38 34C38 20 24 16 24 16Z" fill="#146B3A"/>
+    </svg>
+    <div class="brand-text">
+      <h1>Connect <span>Power</span></h1>
+      <p>Applications Now Open for the Next Batch!</p>
+    </div>
+  </div>
+  <div class="header-actions">
+    <div class="tagline"><b>Learn</b> &bull; <b>Build</b> &bull; <b>Grow</b><br>Across Every Sector</div>
+    <a href="admin-login.html" class="admin-nav-link">
+      <span>🔐</span> Admin Portal
+    </a>
+  </div>
+</header>
+
+<section class="activities">
+  <h2>Choose your track</h2>
+  <p class="sub">Pick a programme to see what it covers.</p>
+  <div class="card-grid">
+
+    <div class="card">
+      <img class="card-photo" src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=600&q=80" alt="Teacher with students in a classroom" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22 style=%22background:%237B4FA6%22><text x=%2250%%22 y=%2250%%22 fill=%22white%22 text-anchor=%22middle%22 font-family=%22sans-serif%22 font-size=%2226%22>Teach Connect</text></svg>'">
+      <div class="card-icon">📖</div>
+      <div class="card-body">
+        <h3>Teach<span>Connect</span></h3>
+        <p>Share knowledge. Build future leaders. Teach and make an impact.</p>
+        <a href="step1.html" class="learn-more">Apply Now <span class="arrow">→</span></a>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-photo" src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80" alt="Person working on a laptop" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22 style=%22background:%232E6FDB%22><text x=%2250%%22 y=%2250%%22 fill=%22white%22 text-anchor=%22middle%22 font-family=%22sans-serif%22 font-size=%2226%22>Tech Connect</text></svg>'">
+      <div class="card-icon">💻</div>
+      <div class="card-body">
+        <h3>Tech<span>Connect</span></h3>
+        <p>Build digital solutions. Learn in-demand tech skills. Create what's next.</p>
+        <a href="step1.html" class="learn-more">Apply Now <span class="arrow">→</span></a>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-photo" src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=600&q=80" alt="Farmer working in a field" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22 style=%22background:%232E9B4F%22><text x=%2250%%22 y=%2250%%22 fill=%22white%22 text-anchor=%22middle%22 font-family=%22sans-serif%22 font-size=%2226%22>Agro Connect</text></svg>'">
+      <div class="card-icon">🌱</div>
+      <div class="card-body">
+        <h3>Agro<span>Connect</span></h3>
+        <p>Support farmers. Promote smart agriculture. Grow food security.</p>
+        <a href="step1.html" class="learn-more">Apply Now <span class="arrow">→</span></a>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-photo" src="https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?auto=format&fit=crop&w=600&q=80" alt="Construction workers reviewing plans" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22 style=%22background:%23E8871E%22><text x=%2250%%22 y=%2250%%22 fill=%22white%22 text-anchor=%22middle%22 font-family=%22sans-serif%22 font-size=%2226%22>Build Connect</text></svg>'">
+      <div class="card-icon">🏗️</div>
+      <div class="card-body">
+        <h3>Build<span>Connect</span></h3>
+        <p>Support builders. Improve infrastructure. Build stronger communities.</p>
+        <a href="step1.html" class="learn-more">Apply Now <span class="arrow">→</span></a>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="card-photo" src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80" alt="Healthcare worker with a patient" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22 style=%22background:%23D93B3B%22><text x=%2250%%22 y=%2250%%22 fill=%22white%22 text-anchor=%22middle%22 font-family=%22sans-serif%22 font-size=%2226%22>Health Connect</text></svg>'">
+      <div class="card-icon">🩺</div>
+      <div class="card-body">
+        <h3>Health<span>Connect</span></h3>
+        <p>Support wellbeing. Build confidence. Create healthier, stronger communities.</p>
+        <a href="step1.html" class="learn-more">Apply Now <span class="arrow">→</span></a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="registration">
+  <div class="steps-block">
+    <h2>Registration section</h2>
+    <p class="sub">Four steps to get enrolled</p>
+    <ul class="steps">
+      <li><span class="step-num">1</span><div class="step-text"><b>Account creation</b><span>Set up your login details</span></div></li>
+      <li><span class="step-num">2</span><div class="step-text"><b>Selection of programme</b><span>Choose the track that fits you</span></div></li>
+      <li><span class="step-num">3</span><div class="step-text"><b>Submission of documents</b><span>Upload what's required for review</span></div></li>
+      <li><span class="step-num">4</span><div class="step-text"><b>Test &amp; verification</b><span>Confirm your details and assessment</span></div></li>
+    </ul>
+  </div>
+  <form class="reg-form" onsubmit="event.preventDefault(); localStorage.setItem('cp_email', document.getElementById('email').value.trim()); window.location.href='step1.html';">
+    <div class="field">
+      <label for="email">Email Address</label>
+      <input id="email" type="email" placeholder="you@example.com" required>
+    </div>
+    <div class="field">
+      <label for="phone">Phone Number</label>
+      <input id="phone" type="tel" placeholder="080 000 0000" required>
+    </div>
+    <div class="field">
+      <label for="password">Create Password</label>
+      <input id="password" type="password" placeholder="At least 8 characters" required minlength="8">
+    </div>
+    <button type="submit" class="create-btn">CREATE ACCOUNT →</button>
+  </form>
+</section>
+
+<div class="badges">
+  <span><span class="dot"></span>Transparent</span>
+  <span><span class="dot"></span>Inclusive</span>
+  <span><span class="dot"></span>Skill Development</span>
+  <span><span class="dot"></span>Better Tomorrow</span>
+</div>
+
+<footer class="bottom-bar">
+  <div>&copy; Connect Power Empowerment Initiative. All rights reserved.</div>
+  <div><a href="admin-login.html" style="text-decoration:underline;">Admin Management Portal</a></div>
+</footer>
+
+</body>
+</html>

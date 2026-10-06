@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connect Power — Step 1: Verify Your Details</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green-deep:#0B3B24;
+    --green:#146B3A;
+    --green-light:#E9F5EC;
+    --gold:#F2B705;
+    --ink:#132018;
+    --muted:#5B6B60;
+    font-family:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--green-light);
+    color:var(--ink);line-height:1.5;
+    min-height:100vh;
+    display:flex;align-items:center;justify-content:center;
+    padding:28px 5vw;
+  }
+  h1,h2,.step-title{font-family:'Poppins',system-ui,sans-serif;}
+
+  .step-card{
+    width:100%;max-width:520px;
+    background:linear-gradient(160deg,var(--green-deep),var(--green));
+    border-radius:22px;
+    padding:6px;
+    box-shadow:0 12px 36px rgba(11,59,36,0.18);
+  }
+  .step-title{
+    padding:20px 26px;
+    font-size:1.3rem;font-weight:700;color:#fff;
+  }
+  .step-title span{color:var(--gold);}
+
+  .inner{
+    background:#fff;
+    border-radius:18px;
+    padding:32px 26px;
+    text-align:center;
+  }
+  .icon-wrap{
+    width:84px;height:84px;margin:0 auto 20px;
+    border-radius:50%;
+    background:var(--green-light);
+    border:2px solid var(--green);
+    display:flex;align-items:center;justify-content:center;
+    font-size:2.1rem;
+  }
+  .inner h2{font-size:1.25rem;color:var(--green-deep);margin-bottom:10px;}
+  .inner p{font-size:.9rem;color:var(--muted);max-width:38ch;margin:0 auto 26px;}
+
+  .field{
+    display:flex;align-items:center;gap:12px;
+    border:1.5px solid var(--green);
+    border-radius:10px;
+    padding:14px 16px;
+    margin-bottom:16px;
+    text-align:left;
+    background:#fff;
+    transition:border-color 0.2s;
+  }
+  .field:focus-within{border-color:var(--gold);outline:2px solid rgba(242,183,5,0.3);}
+  .field .ico{font-size:1.2rem;flex-shrink:0;}
+  .field-text{flex:1;}
+  .field label{display:block;font-size:.78rem;font-weight:600;color:var(--green-deep);}
+  .field input{
+    width:100%;border:none;outline:none;font-size:.95rem;
+    font-family:inherit;color:var(--ink);margin-top:2px;background:transparent;
+  }
+
+  .continue-btn{
+    width:100%;margin-top:6px;
+    background:var(--gold);color:var(--green-deep);
+    padding:15px;border-radius:10px;border:none;
+    font-weight:700;font-size:1rem;cursor:pointer;
+    box-shadow:0 4px 14px rgba(242,183,5,0.3);
+    transition:transform 0.15s ease, filter 0.15s ease;
+  }
+  .continue-btn:hover{filter:brightness(1.05);transform:translateY(-1px);}
+  .back-link{
+    display:block;margin-top:16px;font-size:.85rem;color:var(--muted);text-decoration:none;
+  }
+  .back-link:hover{color:var(--green-deep);text-decoration:underline;}
+  .privacy-note{
+    font-size:.76rem;color:var(--muted);margin-top:14px;line-height:1.5;
+  }
+  .error-msg{
+    color:#B3261E;font-size:.84rem;margin:-6px 0 12px;min-height:1.2em;text-align:left;
+    font-weight:500;
+  }
+</style>
+</head>
+<body>
+
+<div class="step-card">
+  <div class="step-title"><span>STEP 1:</span> Identification &amp; Verification</div>
+  <div class="inner">
+    <div class="icon-wrap">🪪</div>
+    <h2>Identification &amp; Verification</h2>
+    <p>Enter your NIN and date of birth to confirm your identity.</p>
+
+    <form id="step1-form" onsubmit="return validateStep1(event);">
+      <div class="field">
+        <span class="ico">🪪</span>
+        <div class="field-text">
+          <label for="nin">National Identity Number (NIN)</label>
+          <input id="nin" type="text" inputmode="numeric" maxlength="11" placeholder="11-digit NIN" required>
+        </div>
+      </div>
+      <div class="field">
+        <span class="ico">📅</span>
+        <div class="field-text">
+          <label for="dob">Date of Birth</label>
+          <input id="dob" type="date" required>
+        </div>
+      </div>
+      <p id="nin-error" class="error-msg"></p>
+      <button type="submit" class="continue-btn">CONTINUE →</button>
+    </form>
+    <p class="privacy-note">Your NIN is used only to confirm your identity and is stored securely. It is never shared with third parties.</p>
+    <a href="index.html" class="back-link">← Back to home</a>
+  </div>
+</div>
+
+<script>
+  // Prepopulate if previously saved
+  const prevNin = localStorage.getItem('cp_nin');
+  const prevDob = localStorage.getItem('cp_dob');
+  if (prevNin) document.getElementById('nin').value = prevNin;
+  if (prevDob) document.getElementById('dob').value = prevDob;
+
+  function validateStep1(e) {
+    e.preventDefault();
+    const nin = document.getElementById('nin').value.trim();
+    const dob = document.getElementById('dob').value;
+    const errorBox = document.getElementById('nin-error');
+
+    if (!/^\d{11}$/.test(nin)) {
+      errorBox.textContent = 'Incorrect NIN. Please enter a valid 11-digit NIN.';
+      return false;
+    }
+
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const hasHadBirthdayThisYear =
+      today.getMonth() > birthDate.getMonth() ||
+      (today.getMonth() === birthDate.getMonth() && today.getDate() >= birthDate.getDate());
+    if (!hasHadBirthdayThisYear) age--;
+
+    if (isNaN(birthDate.getTime()) || age < 18 || age > 40) {
+      errorBox.textContent = 'Applicants must be between 18 and 40 years old.';
+      return false;
+    }
+
+    errorBox.textContent = '';
+    localStorage.setItem('cp_nin', nin);
+    localStorage.setItem('cp_dob', dob);
+    window.location.href = 'step2.html';
+    return false;
+  }
+</script>
+</body>
+</html>

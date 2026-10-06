@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connect Power — Step 5: Payment (Paystack Backup)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<style>
+  :root{
+    --green-deep:#0B3B24;
+    --green:#146B3A;
+    --green-light:#E9F5EC;
+    --gold:#F2B705;
+    --ink:#132018;
+    --muted:#5B6B60;
+    --line:#DCE7DF;
+    font-family:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--green-light);
+    color:var(--ink);line-height:1.5;
+    min-height:100vh;
+    display:flex;align-items:center;justify-content:center;
+    padding:28px 5vw;
+  }
+  h1,h2,.step-title{font-family:'Poppins',system-ui,sans-serif;}
+
+  .step-card{
+    width:100%;max-width:460px;
+    background:linear-gradient(160deg,var(--green-deep),var(--green));
+    border-radius:22px;
+    padding:6px;
+    box-shadow:0 12px 36px rgba(11,59,36,0.18);
+  }
+  .step-title{
+    padding:20px 26px;
+    font-size:1.3rem;font-weight:700;color:#fff;
+  }
+  .step-title span{color:var(--gold);}
+
+  .inner{background:#fff;border-radius:18px;padding:30px 26px;text-align:center;}
+
+  .summary{
+    background:var(--green-light);
+    border-radius:12px;
+    padding:18px;
+    margin-bottom:20px;
+    text-align:left;
+  }
+  .summary-row{
+    display:flex;justify-content:space-between;font-size:.88rem;
+    padding:6px 0;color:var(--muted);
+  }
+  .summary-row b{color:var(--ink);font-weight:600;}
+  .summary-row.total{
+    border-top:1px solid var(--line);margin-top:6px;padding-top:12px;
+    font-size:1rem;color:var(--green-deep);
+  }
+  .summary-row.total b{color:var(--green-deep);font-size:1.1rem;}
+
+  .field{text-align:left;margin-bottom:18px;}
+  .field label{display:block;font-size:.8rem;font-weight:600;color:var(--green-deep);margin-bottom:6px;}
+  .field input{
+    width:100%;padding:12px 14px;border-radius:9px;border:1.5px solid var(--green);
+    font-size:.92rem;font-family:inherit;color:var(--ink);
+  }
+  .field input:focus{outline:2px solid var(--gold);outline-offset:1px;}
+
+  .pay-btn{
+    width:100%;background:var(--gold);color:var(--green-deep);
+    padding:15px;border-radius:10px;border:none;
+    font-weight:700;font-size:1rem;cursor:pointer;
+    box-shadow:0 4px 14px rgba(242,183,5,0.3);
+  }
+  .pay-btn:disabled{opacity:.5;cursor:not-allowed;}
+
+  .status-msg{font-size:.85rem;margin-top:14px;min-height:1.2em;}
+  .status-msg.error{color:#B3261E;font-weight:500;}
+  .status-msg.info{color:var(--muted);}
+
+  .back-link{
+    display:block;margin-top:16px;font-size:.85rem;color:var(--muted);text-decoration:none;
+  }
+  .back-link:hover{color:var(--green-deep);text-decoration:underline;}
+
+  /* Success state */
+  .success{display:none;}
+  .success .check{
+    width:60px;height:60px;border-radius:50%;
+    background:var(--green);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 16px;font-size:1.8rem;
+  }
+  .success h2{color:var(--green-deep);margin-bottom:6px;}
+  .success .ref{font-weight:700;color:var(--green-deep);margin-bottom:18px;}
+</style>
+</head>
+<body>
+
+<div class="step-card">
+  <div class="step-title"><span>STEP 5:</span> Payment (Paystack Flow)</div>
+  <div class="inner">
+
+    <div id="pay-view">
+      <div class="summary">
+        <div class="summary-row"><span>Track</span><b id="sum-track">—</b></div>
+        <div class="summary-row"><span>Reference</span><b id="sum-ref">—</b></div>
+        <div class="summary-row total"><span>Amount due</span><b>₦1,015</b></div>
+      </div>
+
+      <div class="field">
+        <label for="email">Email address</label>
+        <input id="email" type="email" placeholder="you@example.com" required>
+      </div>
+
+      <button id="pay-btn" class="pay-btn">Pay ₦1,015 →</button>
+      <p id="status-msg" class="status-msg"></p>
+    </div>
+
+    <div class="success" id="success-view">
+      <div class="check">✓</div>
+      <h2>Payment successful!</h2>
+      <p class="ref">Reference: <span id="final-ref"></span></p>
+      <p style="color:var(--muted);font-size:.85rem;">Your application has been submitted. You'll be contacted via the email you provided.</p>
+    </div>
+
+    <a href="step5.html" class="back-link">← Switch back to Free Submission</a>
+  </div>
+</div>
+
+<script>
+  const ref = localStorage.getItem('cp_ref') || ('NP-2017-' + Math.floor(1000000 + Math.random()*8999999));
+  const savedEmail = localStorage.getItem('cp_email') || '';
+  const savedTrack = localStorage.getItem('cp_track') || 'Tech Connect';
+
+  document.getElementById('sum-ref').textContent = ref;
+  document.getElementById('sum-track').textContent = savedTrack;
+  document.getElementById('email').value = savedEmail;
+
+  const payBtn = document.getElementById('pay-btn');
+  const statusMsg = document.getElementById('status-msg');
+
+  payBtn.addEventListener('click', function () {
+    const email = document.getElementById('email').value.trim();
+    if (!email || !email.includes('@')) {
+      statusMsg.textContent = 'Please enter a valid email address.';
+      statusMsg.className = 'status-msg error';
+      return;
+    }
+    statusMsg.textContent = '';
+
+    const payRef = ref + '-' + Date.now();
+
+    const handler = PaystackPop.setup({
+      key: "pk_test_0f41ba40b2f447ee20906bd870da47f77540b52c",
+      email: email,
+      amount: 101500, // ₦1,015 in kobo
+      currency: "NGN",
+      ref: payRef,
+      callback: function (response) {
+        statusMsg.textContent = 'Confirming your payment...';
+        statusMsg.className = 'status-msg info';
+
+        fetch('/api/verify-payment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            reference: response.reference,
+            applicant: {
+              fullname: localStorage.getItem('cp_fullname') || '',
+              nin: localStorage.getItem('cp_nin') || '',
+              track: savedTrack
+            }
+          })
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              document.getElementById('final-ref').textContent = payRef;
+              document.getElementById('pay-view').style.display = 'none';
+              document.getElementById('success-view').style.display = 'block';
+            } else {
+              statusMsg.textContent = 'We could not confirm this payment. Contact support with reference ' + payRef + '.';
+              statusMsg.className = 'status-msg error';
+            }
+          })
+          .catch(() => {
+            statusMsg.textContent = 'Paid, but could not reach the server to confirm. Save this reference: ' + payRef;
+            statusMsg.className = 'status-msg error';
+          });
+      },
+      onClose: function () {
+        statusMsg.textContent = 'Payment window closed. You have not been charged.';
+        statusMsg.className = 'status-msg info';
+      }
+    });
+    handler.openIframe();
+  });
+</script>
+
+</body>
+</html>

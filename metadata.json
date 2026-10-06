@@ -1,0 +1,6 @@
+{
+  "name": "connectpower",
+  "description": "Connect Power — 5-step youth empowerment programme application portal across Teach, Tech, Agro, Build, and Health tracks with document uploads and admin dashboard.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

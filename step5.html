@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connect Power — Step 5: Submit Application</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green-deep:#0B3B24;
+    --green:#146B3A;
+    --green-light:#E9F5EC;
+    --gold:#F2B705;
+    --ink:#132018;
+    --muted:#5B6B60;
+    --line:#DCE7DF;
+    font-family:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--green-light);
+    color:var(--ink);line-height:1.5;
+    min-height:100vh;
+    display:flex;align-items:center;justify-content:center;
+    padding:28px 5vw;
+  }
+  h1,h2,.step-title{font-family:'Poppins',system-ui,sans-serif;}
+
+  .step-card{
+    width:100%;max-width:480px;
+    background:linear-gradient(160deg,var(--green-deep),var(--green));
+    border-radius:22px;
+    padding:6px;
+    box-shadow:0 12px 36px rgba(11,59,36,0.18);
+  }
+  .step-title{
+    padding:20px 26px;
+    font-size:1.3rem;font-weight:700;color:#fff;
+  }
+  .step-title span{color:var(--gold);}
+
+  .inner{background:#fff;border-radius:18px;padding:30px 26px;text-align:center;}
+
+  .summary{
+    background:var(--green-light);
+    border-radius:12px;
+    padding:18px;
+    margin-bottom:20px;
+    text-align:left;
+  }
+  .summary-row{
+    display:flex;justify-content:space-between;font-size:.88rem;
+    padding:6px 0;color:var(--muted);
+  }
+  .summary-row b{color:var(--ink);font-weight:600;}
+
+  .status-badge{
+    display:inline-block;
+    background:#E2F3E7;
+    color:var(--green);
+    font-size:0.75rem;
+    font-weight:700;
+    padding:3px 8px;
+    border-radius:20px;
+  }
+
+  .field{text-align:left;margin-bottom:18px;}
+  .field label{display:block;font-size:.8rem;font-weight:600;color:var(--green-deep);margin-bottom:6px;}
+  .field input{
+    width:100%;padding:12px 14px;border-radius:9px;border:1.5px solid var(--green);
+    font-size:.92rem;font-family:inherit;color:var(--ink);
+  }
+  .field input:focus{outline:2px solid var(--gold);outline-offset:1px;}
+
+  .submit-btn{
+    width:100%;background:var(--gold);color:var(--green-deep);
+    padding:15px;border-radius:10px;border:none;
+    font-weight:700;font-size:1rem;cursor:pointer;
+    box-shadow:0 4px 14px rgba(242,183,5,0.3);
+    transition:transform 0.15s ease, filter 0.15s ease;
+  }
+  .submit-btn:hover:not(:disabled){filter:brightness(1.05);transform:translateY(-1px);}
+  .submit-btn:disabled{opacity:.5;cursor:not-allowed;}
+
+  .status-msg{font-size:.85rem;margin-top:14px;min-height:1.2em;}
+  .status-msg.error{color:#B3261E;font-weight:500;}
+  .status-msg.info{color:var(--muted);}
+
+  .back-link{
+    display:block;margin-top:16px;font-size:.85rem;color:var(--muted);text-decoration:none;
+  }
+  .back-link:hover{color:var(--green-deep);text-decoration:underline;}
+
+  .paystack-backup-link{
+    display:inline-block;margin-top:14px;font-size:.8rem;color:var(--muted);
+    text-decoration:underline;
+  }
+  .paystack-backup-link:hover{color:var(--green);}
+
+  .success{display:none;}
+  .success .check{
+    width:64px;height:64px;border-radius:50%;
+    background:var(--green);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 16px;font-size:2rem;
+    box-shadow:0 6px 16px rgba(20,107,58,0.25);
+  }
+  .success h2{color:var(--green-deep);margin-bottom:8px;}
+  .success .ref{font-weight:700;color:var(--green-deep);margin-bottom:18px;font-size:1.1rem;}
+  .success-actions{display:flex;gap:10px;margin-top:20px;justify-content:center;}
+  .action-btn{
+    padding:10px 18px;border-radius:8px;font-size:0.88rem;font-weight:600;cursor:pointer;text-decoration:none;
+  }
+  .print-btn{background:var(--green-deep);color:#fff;border:none;}
+  .home-btn{background:var(--green-light);color:var(--green-deep);border:1px solid var(--green);}
+</style>
+</head>
+<body>
+
+<div class="step-card">
+  <div class="step-title"><span>STEP 5:</span> Submit Application</div>
+  <div class="inner">
+
+    <div id="submit-view">
+      <div class="summary">
+        <div class="summary-row"><span>Track</span><b id="sum-track">—</b></div>
+        <div class="summary-row"><span>Reference</span><b id="sum-ref">—</b></div>
+        <div class="summary-row">
+          <span>Fee status</span>
+          <span class="status-badge">Fee Paused (Free Submission)</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="email">Confirmation Email Address</label>
+        <input id="email" type="email" placeholder="you@example.com" required>
+      </div>
+
+      <button id="submit-btn" class="submit-btn">Submit Application →</button>
+      <p id="status-msg" class="status-msg"></p>
+
+      <a href="step5-with-paystack-BACKUP.html" class="paystack-backup-link">
+        View Paystack payment version (Backup reference)
+      </a>
+    </div>
+
+    <div class="success" id="success-view">
+      <div class="check">✓</div>
+      <h2>Application submitted successfully!</h2>
+      <p class="ref">Reference: <span id="final-ref"></span></p>
+      <p style="color:var(--muted);font-size:.88rem;line-height:1.6;">
+        Your application has been received and indexed by the portal. You will be contacted via the email address you provided.
+      </p>
+      <div class="success-actions">
+        <button class="action-btn print-btn" onclick="window.print()">Print Slip</button>
+        <a href="index.html" class="action-btn home-btn">Back to Home</a>
+      </div>
+    </div>
+
+    <a href="step4.html" class="back-link">← Back to Step 4</a>
+  </div>
+</div>
+
+<script>
+  const ref = localStorage.getItem('cp_ref') || ('NP-2017-' + Math.floor(1000000 + Math.random()*8999999));
+  const savedEmail = localStorage.getItem('cp_email') || '';
+  const savedTrack = localStorage.getItem('cp_track') || 'Tech Connect';
+
+  document.getElementById('sum-ref').textContent = ref;
+  document.getElementById('sum-track').textContent = savedTrack;
+  document.getElementById('email').value = savedEmail;
+
+  const submitBtn = document.getElementById('submit-btn');
+  const statusMsg = document.getElementById('status-msg');
+
+  submitBtn.addEventListener('click', function () {
+    const email = document.getElementById('email').value.trim();
+    if (!email || !email.includes('@')) {
+      statusMsg.textContent = 'Please enter a valid email address.';
+      statusMsg.className = 'status-msg error';
+      return;
+    }
+    statusMsg.textContent = 'Submitting application...';
+    statusMsg.className = 'status-msg info';
+    submitBtn.disabled = true;
+
+    fetch('/api/submit-application', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        reference: ref,
+        email: email,
+        applicant: {
+          fullname: localStorage.getItem('cp_fullname') || 'Applicant',
+          nin: localStorage.getItem('cp_nin') || '',
+          track: savedTrack
+        }
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          document.getElementById('final-ref').textContent = ref;
+          document.getElementById('submit-view').style.display = 'none';
+          document.getElementById('success-view').style.display = 'block';
+        } else {
+          statusMsg.textContent = 'Could not submit: ' + (data.message || 'Please try again.');
+          statusMsg.className = 'status-msg error';
+          submitBtn.disabled = false;
+        }
+      })
+      .catch(err => {
+        console.error('Submit error:', err);
+        statusMsg.textContent = 'Could not reach the server. Please check your connection and try again.';
+        statusMsg.className = 'status-msg error';
+        submitBtn.disabled = false;
+      });
+  });
+</script>
+
+</body>
+</html>

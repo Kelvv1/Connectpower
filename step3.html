@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connect Power — Step 3: Education & Qualifications</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green-deep:#0B3B24;
+    --green:#146B3A;
+    --green-light:#E9F5EC;
+    --gold:#F2B705;
+    --ink:#132018;
+    --muted:#5B6B60;
+    font-family:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--green-light);
+    color:var(--ink);line-height:1.5;
+    min-height:100vh;
+    padding:28px 5vw 60px;
+  }
+  h1,h2,.step-title{font-family:'Poppins',system-ui,sans-serif;}
+
+  .step-card{
+    max-width:760px;margin:0 auto;
+    background:linear-gradient(160deg,var(--green-deep),var(--green));
+    border-radius:22px;
+    padding:6px;
+    box-shadow:0 12px 36px rgba(11,59,36,0.18);
+  }
+  .step-title{
+    padding:20px 26px;
+    font-size:1.3rem;font-weight:700;color:#fff;
+  }
+  .step-title span{color:var(--gold);}
+
+  .inner{background:#fff;border-radius:18px;padding:30px 28px;}
+  .inner .sub{color:var(--muted);font-size:.88rem;margin-bottom:22px;}
+
+  .row{display:grid;gap:16px;margin-bottom:18px;}
+  .row-2{grid-template-columns:repeat(2,1fr);}
+  @media (max-width:640px){ .row-2{grid-template-columns:1fr;} }
+
+  .field label{
+    display:block;font-size:.82rem;font-weight:600;color:var(--green-deep);margin-bottom:6px;
+  }
+  .field-input{
+    display:flex;align-items:center;gap:10px;
+    border:1.5px solid var(--green);border-radius:9px;
+    padding:12px 14px;background:#fff;
+  }
+  .field-input .ico{font-size:1.1rem;flex-shrink:0;}
+  .field input, .field select{
+    width:100%;border:none;outline:none;
+    font-size:.92rem;font-family:inherit;color:var(--ink);background:transparent;
+  }
+  .field-plain{
+    width:100%;padding:12px 14px;border-radius:9px;border:1.5px solid var(--green);
+    font-size:.92rem;font-family:inherit;color:var(--ink);background:#fff;
+  }
+  .field select:focus, .field-plain:focus, .field-input:focus-within{outline:2px solid var(--gold);outline-offset:1px;}
+
+  .save-btn{
+    width:100%;margin-top:8px;
+    background:var(--green-deep);color:#fff;
+    padding:15px;border-radius:10px;border:none;
+    font-weight:700;font-size:1rem;cursor:pointer;
+    box-shadow:0 4px 14px rgba(11,59,36,0.25);
+    transition:transform 0.15s ease, filter 0.15s ease;
+  }
+  .save-btn:hover{filter:brightness(1.1);transform:translateY(-1px);}
+  .back-link{
+    display:block;margin-top:16px;font-size:.85rem;color:var(--muted);text-decoration:none;text-align:center;
+  }
+  .back-link:hover{color:var(--green-deep);text-decoration:underline;}
+</style>
+</head>
+<body>
+
+<div class="step-card">
+  <div class="step-title"><span>STEP 3:</span> Education &amp; Qualifications</div>
+  <div class="inner">
+    <p class="sub">Tell us about your academic background.</p>
+
+    <form id="step3-form" onsubmit="handleStep3Submit(event);">
+
+      <div class="row">
+        <div class="field">
+          <label for="qualification">Highest Qualification</label>
+          <select id="qualification" class="field-plain" required>
+            <option value="" disabled selected>Select</option>
+            <option>SSCE</option>
+            <option>OND</option>
+            <option>HND</option>
+            <option>Degree</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="institution">Institution Name</label>
+          <div class="field-input">
+            <span class="ico">🏛️</span>
+            <input id="institution" type="text" placeholder="Name of school/institution" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="course">Course of Study</label>
+          <div class="field-input">
+            <span class="ico">📚</span>
+            <input id="course" type="text" placeholder="e.g. Computer Science" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="grade">Grade</label>
+          <select id="grade" class="field-plain" required>
+            <option value="" disabled selected>Select</option>
+            <option>Distinction</option>
+            <option>First Class</option>
+            <option>Second Class Upper</option>
+            <option>Second Class Lower</option>
+            <option>Third Class</option>
+            <option>Merit</option>
+            <option>Credit</option>
+            <option>Pass</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row row-2">
+        <div class="field">
+          <label for="startdate">Start Date</label>
+          <input id="startdate" type="date" class="field-plain" required>
+        </div>
+        <div class="field">
+          <label for="enddate">End Date</label>
+          <input id="enddate" type="date" class="field-plain" required>
+        </div>
+      </div>
+
+      <div class="row row-2">
+        <div class="field">
+          <label for="gradyear">Graduation Year</label>
+          <select id="gradyear" class="field-plain" required>
+            <option value="" disabled selected>Select year</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="nysc">NYSC Certificate Status</label>
+          <select id="nysc" class="field-plain" required>
+            <option value="" disabled selected>Select</option>
+            <option>Completed</option>
+            <option>Exempted</option>
+            <option>Currently serving</option>
+            <option>Not applicable</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit" class="save-btn">SAVE &amp; CONTINUE →</button>
+    </form>
+    <a href="step2.html" class="back-link">← Back to Step 2</a>
+  </div>
+</div>
+
+<script>
+  // Populate last 20 graduation years
+  const gradSelect = document.getElementById('gradyear');
+  const currentYear = new Date().getFullYear();
+  for (let i = 0; i < 20; i++) {
+    const yr = currentYear - i;
+    const opt = document.createElement('option');
+    opt.value = yr;
+    opt.textContent = yr;
+    gradSelect.appendChild(opt);
+  }
+
+  // Restore saved values
+  const savedQual = localStorage.getItem('cp_qualification');
+  const savedInst = localStorage.getItem('cp_institution');
+  const savedCourse = localStorage.getItem('cp_course');
+  const savedGrade = localStorage.getItem('cp_grade');
+  const savedGradYear = localStorage.getItem('cp_gradyear');
+  const savedNysc = localStorage.getItem('cp_nysc');
+
+  if (savedQual) document.getElementById('qualification').value = savedQual;
+  if (savedInst) document.getElementById('institution').value = savedInst;
+  if (savedCourse) document.getElementById('course').value = savedCourse;
+  if (savedGrade) document.getElementById('grade').value = savedGrade;
+  if (savedGradYear) document.getElementById('gradyear').value = savedGradYear;
+  if (savedNysc) document.getElementById('nysc').value = savedNysc;
+
+  function handleStep3Submit(e) {
+    e.preventDefault();
+    localStorage.setItem('cp_qualification', document.getElementById('qualification').value);
+    localStorage.setItem('cp_institution', document.getElementById('institution').value.trim());
+    localStorage.setItem('cp_course', document.getElementById('course').value.trim());
+    localStorage.setItem('cp_grade', document.getElementById('grade').value);
+    localStorage.setItem('cp_gradyear', document.getElementById('gradyear').value);
+    localStorage.setItem('cp_nysc', document.getElementById('nysc').value);
+
+    window.location.href = 'step4.html';
+  }
+</script>
+
+</body>
+</html>

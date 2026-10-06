@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connect Power — Admin Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green-deep:#0B3B24;
+    --green:#146B3A;
+    --green-light:#E9F5EC;
+    --gold:#F2B705;
+    --ink:#132018;
+    --muted:#5B6B60;
+    font-family:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--green-light);color:var(--ink);line-height:1.5;
+    min-height:100vh;display:flex;align-items:center;justify-content:center;
+    padding:28px 5vw;
+  }
+  h1,.step-title{font-family:'Poppins',system-ui,sans-serif;}
+  .step-card{
+    width:100%;max-width:400px;
+    background:linear-gradient(160deg,var(--green-deep),var(--green));
+    border-radius:22px;padding:6px;
+    box-shadow:0 12px 36px rgba(11,59,36,0.18);
+  }
+  .step-title{padding:20px 26px;font-size:1.25rem;font-weight:700;color:#fff;}
+  .step-title span{color:var(--gold);}
+  .inner{background:#fff;border-radius:18px;padding:30px 26px;}
+  .field{margin-bottom:16px;text-align:left;}
+  .field label{display:block;font-size:.8rem;font-weight:600;color:var(--green-deep);margin-bottom:6px;}
+  .field input{
+    width:100%;padding:12px 14px;border-radius:9px;border:1.5px solid var(--green);
+    font-size:.92rem;font-family:inherit;color:var(--ink);
+  }
+  .field input:focus{outline:2px solid var(--gold);outline-offset:1px;}
+  .login-btn{
+    width:100%;background:var(--gold);color:var(--green-deep);
+    padding:14px;border-radius:10px;border:none;
+    font-weight:700;font-size:.98rem;cursor:pointer;
+    box-shadow:0 4px 14px rgba(242,183,5,0.3);
+    transition:transform 0.15s ease, filter 0.15s ease;
+  }
+  .login-btn:hover{filter:brightness(1.05);transform:translateY(-1px);}
+  .login-btn:active{transform:translateY(1px);}
+  .error-msg{color:#B3261E;font-size:.85rem;margin-top:12px;text-align:center;min-height:1.2em;font-weight:500;}
+  .credential-hint{
+    margin-top:18px;padding:12px;background:#F6FAF7;border-radius:8px;
+    font-size:0.75rem;color:var(--muted);line-height:1.4;text-align:left;
+    border:1px dashed var(--green);
+  }
+  .back-home{
+    display:block;margin-top:16px;font-size:0.85rem;color:var(--muted);text-align:center;text-decoration:none;
+  }
+  .back-home:hover{color:var(--green-deep);text-decoration:underline;}
+</style>
+</head>
+<body>
+
+<div class="step-card">
+  <div class="step-title">Admin <span>Login</span></div>
+  <div class="inner">
+    <form id="login-form">
+      <div class="field">
+        <label for="username">Username</label>
+        <input id="username" type="text" value="admin" required>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" value="BlackVelve!@#123" required>
+      </div>
+      <button type="submit" class="login-btn" id="login-btn">Log in →</button>
+      <p id="error-msg" class="error-msg"></p>
+    </form>
+
+    <div class="credential-hint">
+      <strong>Default Credentials:</strong><br>
+      User: <code>admin</code><br>
+      Pass: <code>BlackVelve!@#123</code>
+    </div>
+
+    <a href="index.html" class="back-home">← Back to Portal Home</a>
+  </div>
+</div>
+
+<script>
+  document.getElementById('login-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const errorMsg = document.getElementById('error-msg');
+    const loginBtn = document.getElementById('login-btn');
+
+    loginBtn.disabled = true;
+    loginBtn.textContent = 'Verifying...';
+
+    fetch('/api/admin-login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          if (data.token) {
+            sessionStorage.setItem('admin_token', data.token);
+          }
+          window.location.href = 'admin-dashboard.html';
+        } else {
+          errorMsg.textContent = data.message || 'Login failed.';
+          loginBtn.disabled = false;
+          loginBtn.textContent = 'Log in →';
+        }
+      })
+      .catch(() => {
+        errorMsg.textContent = 'Could not reach the server.';
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Log in →';
+      });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connect Power — Admin Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green-deep:#0B3B24;
+    --green:#146B3A;
+    --green-light:#E9F5EC;
+    --gold:#F2B705;
+    --ink:#132018;
+    --muted:#5B6B60;
+    --line:#DCE7DF;
+    font-family:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--green-light);color:var(--ink);line-height:1.5;padding:28px 4vw 60px;}
+  h1{font-family:'Poppins',system-ui,sans-serif;}
+
+  header{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:24px;flex-wrap:wrap;gap:12px;
+  }
+  .header-left{display:flex;align-items:center;gap:14px;}
+  .logo-mini{width:36px;height:36px;}
+  header h1{font-size:1.45rem;color:var(--green-deep);}
+  .header-actions{display:flex;align-items:center;gap:10px;}
+  .portal-btn{
+    background:#fff;color:var(--green-deep);border:1.5px solid var(--green);
+    padding:9px 16px;border-radius:8px;font-weight:600;font-size:.85rem;
+    cursor:pointer;text-decoration:none;display:inline-block;
+  }
+  .logout-btn{
+    background:var(--green-deep);color:#fff;border:none;padding:10px 18px;
+    border-radius:8px;font-weight:600;font-size:.85rem;cursor:pointer;
+    transition:background 0.2s;
+  }
+  .logout-btn:hover{background:#082818;}
+
+  .summary{
+    background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:18px 20px;margin-bottom:20px;font-size:.92rem;color:var(--muted);
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+    box-shadow:0 2px 10px rgba(11,59,36,0.04);
+  }
+  .summary b{color:var(--green-deep);font-size:1.1rem;}
+  .refresh-btn{
+    background:none;border:none;color:var(--green);font-weight:600;cursor:pointer;font-size:0.85rem;
+  }
+
+  table{
+    width:100%;border-collapse:collapse;background:#fff;
+    border-radius:14px;overflow:hidden;font-size:.88rem;
+  }
+  th, td{padding:14px 16px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
+  th{background:var(--green-light);color:var(--green-deep);font-size:.78rem;text-transform:uppercase;letter-spacing:0.04em;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#FAFCFA;}
+
+  .badge-track{
+    display:inline-block;padding:3px 8px;border-radius:6px;
+    font-size:0.75rem;font-weight:600;background:var(--green-light);color:var(--green-deep);
+  }
+  .doc-tag{
+    display:inline-flex;align-items:center;gap:4px;
+    color:var(--green-deep);background:#EFF7F2;border:1px solid var(--line);
+    padding:3px 7px;border-radius:6px;font-size:0.76rem;font-weight:600;
+    margin:2px 4px 2px 0;text-decoration:none;transition:background 0.15s;
+  }
+  .doc-tag:hover{background:var(--green);color:#fff;}
+  .empty-msg{padding:40px;text-align:center;color:var(--muted);background:#fff;border-radius:14px;}
+  .table-wrap{
+    overflow-x:auto;box-shadow:0 4px 16px rgba(11,59,36,0.06);border-radius:14px;background:#fff;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <svg class="logo-mini" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="10" r="5" fill="#F2B705"/>
+      <path d="M24 16C24 16 10 20 10 34C10 34 24 34 24 20C24 34 38 34 38 34C38 20 24 16 24 16Z" fill="#146B3A"/>
+    </svg>
+    <h1>Connect Power &bull; Applications Dashboard</h1>
+  </div>
+  <div class="header-actions">
+    <a href="index.html" class="portal-btn">View Public Site</a>
+    <button class="logout-btn" id="logout-btn">Log out</button>
+  </div>
+</header>
+
+<div class="summary" id="summary">
+  <span>Loading applications…</span>
+  <button class="refresh-btn" onclick="fetchApps()">↻ Refresh</button>
+</div>
+<div class="table-wrap" id="table-wrap"></div>
+
+<script>
+  function getHeaders() {
+    const headers = {};
+    const token = sessionStorage.getItem('admin_token');
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+    return headers;
+  }
+
+  function fetchApps() {
+    fetch('/api/applications', { credentials: 'include', headers: getHeaders() })
+      .then(res => {
+        if (res.status === 401) {
+          window.location.href = 'admin-login.html';
+          return null;
+        }
+        return res.json();
+      })
+      .then(data => {
+        if (!data) return;
+        const apps = data.applications || [];
+        document.getElementById('summary').innerHTML = `
+          <span><b>${apps.length}</b> application${apps.length === 1 ? '' : 's'} recorded.</span>
+          <button class="refresh-btn" onclick="fetchApps()">↻ Refresh Data</button>
+        `;
+
+        if (apps.length === 0) {
+          document.getElementById('table-wrap').innerHTML = '<div class="empty-msg">No applications have been submitted yet.</div>';
+          return;
+        }
+
+        const docLabels = {
+          birth: 'Birth Cert', nysc: 'NYSC', waec: 'WAEC/NECO',
+          photo: 'Passport Photo', govid: 'Gov ID', prof: 'Prof Cert',
+          degree: 'Degree', cv: 'CV'
+        };
+
+        function docLinks(a) {
+          const docs = a.documents || {};
+          const keys = Object.keys(docs);
+          if (keys.length === 0) return '<span style="color:var(--muted)">No files</span>';
+          return keys.map(key =>
+            `<a class="doc-tag" href="/api/uploads/${encodeURIComponent(a.reference)}/${encodeURIComponent(docs[key])}" target="_blank" title="View ${docs[key]}">📎 ${docLabels[key] || key}</a>`
+          ).join('');
+        }
+
+        // Show newest first
+        const sorted = [...apps].reverse();
+
+        let rows = sorted.map(a => `
+          <tr>
+            <td><strong>${escapeHtml(a.fullname || '—')}</strong></td>
+            <td><a href="mailto:${escapeHtml(a.email)}" style="color:var(--green);">${escapeHtml(a.email || '—')}</a></td>
+            <td><span class="badge-track">${escapeHtml(a.track || '—')}</span></td>
+            <td><code>${escapeHtml(a.nin || '—')}</code></td>
+            <td>${a.amount ? '₦' + (a.amount / 100).toLocaleString() : '<span style="color:var(--muted)">Not collected</span>'}</td>
+            <td><code>${escapeHtml(a.reference || '—')}</code></td>
+            <td>${a.paidAt ? new Date(a.paidAt).toLocaleString() : '—'}</td>
+            <td><div style="display:flex;flex-wrap:wrap;max-width:280px;">${docLinks(a)}</div></td>
+          </tr>
+        `).join('');
+
+        document.getElementById('table-wrap').innerHTML = `
+          <table>
+            <thead>
+              <tr>
+                <th>Applicant</th><th>Email</th><th>Track</th><th>NIN</th><th>Amount</th><th>Reference</th><th>Submitted</th><th>Uploaded Documents</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        `;
+      })
+      .catch(err => {
+        console.error(err);
+        document.getElementById('summary').textContent = 'Could not load applications. Please verify your connection.';
+      });
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>"']/g, function(m) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+    });
+  }
+
+  fetchApps();
+
+  document.getElementById('logout-btn').addEventListener('click', function () {
+    fetch('/api/admin-logout', { method: 'POST', credentials: 'include', headers: getHeaders() })
+      .finally(() => {
+        sessionStorage.removeItem('admin_token');
+        window.location.href = 'admin-login.html';
+      });
+  });
+</script>
+
+</body>
+</html>

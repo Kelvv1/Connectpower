@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connect Power — Step 2: Personal Details</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green-deep:#0B3B24;
+    --green:#146B3A;
+    --green-light:#E9F5EC;
+    --gold:#F2B705;
+    --ink:#132018;
+    --muted:#5B6B60;
+    font-family:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--green-light);
+    color:var(--ink);line-height:1.5;
+    min-height:100vh;
+    padding:28px 5vw 60px;
+  }
+  h1,h2,.step-title{font-family:'Poppins',system-ui,sans-serif;}
+
+  .step-card{
+    max-width:760px;margin:0 auto;
+    background:linear-gradient(160deg,var(--green-deep),var(--green));
+    border-radius:22px;
+    padding:6px;
+    box-shadow:0 12px 36px rgba(11,59,36,0.18);
+  }
+  .step-title{
+    padding:20px 26px;
+    font-size:1.3rem;font-weight:700;color:#fff;
+  }
+  .step-title span{color:var(--gold);}
+
+  .inner{background:#fff;border-radius:18px;padding:30px 28px;}
+
+  .row{display:grid;gap:16px;margin-bottom:18px;}
+  .row-3{grid-template-columns:repeat(3,1fr);}
+  .row-2{grid-template-columns:repeat(2,1fr);}
+  @media (max-width:640px){ .row-3,.row-2{grid-template-columns:1fr;} }
+
+  .field label{
+    display:block;font-size:.82rem;font-weight:600;color:var(--green-deep);margin-bottom:6px;
+  }
+  .field input, .field select{
+    width:100%;padding:12px 14px;border-radius:9px;border:1.5px solid var(--green);
+    font-size:.92rem;font-family:inherit;color:var(--ink);background:#fff;
+  }
+  .field input:focus, .field select:focus{outline:2px solid var(--gold);outline-offset:1px;}
+
+  .save-btn{
+    width:100%;margin-top:8px;
+    background:var(--green-deep);color:#fff;
+    padding:15px;border-radius:10px;border:none;
+    font-weight:700;font-size:1rem;cursor:pointer;
+    box-shadow:0 4px 14px rgba(11,59,36,0.25);
+    transition:transform 0.15s ease, filter 0.15s ease;
+  }
+  .save-btn:hover{filter:brightness(1.1);transform:translateY(-1px);}
+  .back-link{
+    display:block;margin-top:16px;font-size:.85rem;color:var(--muted);text-decoration:none;text-align:center;
+  }
+  .back-link:hover{color:var(--green-deep);text-decoration:underline;}
+</style>
+</head>
+<body>
+
+<div class="step-card">
+  <div class="step-title"><span>STEP 2:</span> Personal Details</div>
+  <div class="inner">
+    <form id="step2-form" onsubmit="handleStep2Submit(event);">
+
+      <div class="row row-3">
+        <div class="field">
+          <label for="surname">Surname</label>
+          <input id="surname" type="text" required>
+        </div>
+        <div class="field">
+          <label for="firstname">First Name</label>
+          <input id="firstname" type="text" required>
+        </div>
+        <div class="field">
+          <label for="middlename">Middle Name</label>
+          <input id="middlename" type="text">
+        </div>
+      </div>
+
+      <div class="row row-2">
+        <div class="field">
+          <label for="gender">Gender</label>
+          <select id="gender" required>
+            <option value="" disabled selected>Select</option>
+            <option>Female</option>
+            <option>Male</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="marital">Marital Status</label>
+          <select id="marital" required>
+            <option value="" disabled selected>Select</option>
+            <option>Single</option>
+            <option>Married</option>
+            <option>Divorced</option>
+            <option>Widowed</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row row-2">
+        <div class="field">
+          <label for="dob">Date of Birth</label>
+          <input id="dob" type="date" required>
+        </div>
+        <div class="field">
+          <label for="phone">Phone Number</label>
+          <input id="phone" type="tel" placeholder="080 000 0000" required>
+        </div>
+      </div>
+
+      <div class="row row-2">
+        <div class="field">
+          <label for="employment">Employment Status</label>
+          <select id="employment" required>
+            <option value="" disabled selected>Select</option>
+            <option>Employed</option>
+            <option>Unemployed</option>
+            <option>Self-employed</option>
+            <option>Student</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="profession">Current Profession</label>
+          <input id="profession" type="text" placeholder="e.g. Teacher, Trader">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="disability">Physical Disability Status</label>
+          <select id="disability" required>
+            <option value="" disabled selected>Select</option>
+            <option>None</option>
+            <option>Visual impairment</option>
+            <option>Hearing impairment</option>
+            <option>Mobility impairment</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row row-2">
+        <div class="field">
+          <label for="state">State of Origin</label>
+          <select id="state" required>
+            <option value="" disabled selected>Select state</option>
+            <option>Lagos</option>
+            <option>Abia</option>
+            <option>Kano</option>
+            <option>Rivers</option>
+            <option>Oyo</option>
+            <option>Anambra</option>
+            <option>Delta</option>
+            <option>Edo</option>
+            <option>Enugu</option>
+            <option>Kaduna</option>
+            <option>Ogun</option>
+            <option>Ondo</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="lga">LGA</label>
+          <input id="lga" type="text" placeholder="Local Government Area" required>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="address">Residential Address</label>
+          <input id="address" type="text" placeholder="Street, city, state" required>
+        </div>
+      </div>
+
+      <button type="submit" class="save-btn">SAVE &amp; CONTINUE →</button>
+    </form>
+    <a href="step1.html" class="back-link">← Back to Step 1</a>
+  </div>
+</div>
+
+<script>
+  // Restore saved DOB from step 1 if available
+  const savedDob = localStorage.getItem('cp_dob');
+  if (savedDob) document.getElementById('dob').value = savedDob;
+
+  // Restore existing values if applicant is coming back
+  const savedFirstname = localStorage.getItem('cp_firstname');
+  const savedSurname = localStorage.getItem('cp_surname');
+  const savedMiddlename = localStorage.getItem('cp_middlename');
+  const savedPhone = localStorage.getItem('cp_phone');
+  const savedState = localStorage.getItem('cp_state');
+  const savedLga = localStorage.getItem('cp_lga');
+  const savedAddress = localStorage.getItem('cp_address');
+  const savedGender = localStorage.getItem('cp_gender');
+
+  if (savedFirstname) document.getElementById('firstname').value = savedFirstname;
+  if (savedSurname) document.getElementById('surname').value = savedSurname;
+  if (savedMiddlename) document.getElementById('middlename').value = savedMiddlename;
+  if (savedPhone) document.getElementById('phone').value = savedPhone;
+  if (savedState) document.getElementById('state').value = savedState;
+  if (savedLga) document.getElementById('lga').value = savedLga;
+  if (savedAddress) document.getElementById('address').value = savedAddress;
+  if (savedGender) document.getElementById('gender').value = savedGender;
+
+  function handleStep2Submit(e) {
+    e.preventDefault();
+    const fname = document.getElementById('firstname').value.trim();
+    const sname = document.getElementById('surname').value.trim();
+    const mname = document.getElementById('middlename').value.trim();
+    const fullname = `${fname} ${sname}`;
+
+    localStorage.setItem('cp_firstname', fname);
+    localStorage.setItem('cp_surname', sname);
+    localStorage.setItem('cp_middlename', mname);
+    localStorage.setItem('cp_fullname', fullname);
+    localStorage.setItem('cp_gender', document.getElementById('gender').value);
+    localStorage.setItem('cp_dob', document.getElementById('dob').value);
+    localStorage.setItem('cp_phone', document.getElementById('phone').value.trim());
+    localStorage.setItem('cp_state', document.getElementById('state').value);
+    localStorage.setItem('cp_lga', document.getElementById('lga').value.trim());
+    localStorage.setItem('cp_address', document.getElementById('address').value.trim());
+
+    window.location.href = 'step3.html';
+  }
+</script>
+
+</body>
+</html>
